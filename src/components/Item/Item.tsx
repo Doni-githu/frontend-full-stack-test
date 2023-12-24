@@ -1,6 +1,6 @@
 import './Item.scss'
 import { IItemProps } from "./Item.props"
-import { useContext, useState } from 'react'
+import { ChangeEvent, useContext, useState } from 'react'
 import { context } from '../../context'
 import { IContext, TodoAction, TodoStates } from '../../interfaces/types'
 import Todo from '../../services/todo'
@@ -8,6 +8,7 @@ import Todo from '../../services/todo'
 const Item = ({ todo }: IItemProps) => {
     const { dispatch } = useContext(context) as IContext<TodoStates, TodoAction>
     const [deleting, setDeleting] = useState(false)
+    const [changingStatus, setChangingStatus] = useState(false)
     const handleUpdateClick = () => {
         const urlParams = new URLSearchParams(window.location.search);
 
@@ -27,9 +28,16 @@ const Item = ({ todo }: IItemProps) => {
             dispatch({ type: "DELETE_TODO", payload: todo.id })
         } catch (error) {
             console.log(error)
-        }finally{
+        } finally {
             setDeleting(false)
         }
+    }
+
+    const handleChangeStatus = async (e: ChangeEvent<HTMLSelectElement>) => {
+        setChangingStatus(true)
+        await Todo.updateTodo(todo.id, { ...todo, status: e.target.value as 'completed' | 'pending' | 'in proccess' })
+        dispatch({ type: "CHANGE_STATUS", payload: { id: todo.id, status: e.target.value } })
+        setChangingStatus(false)
     }
 
     return (
@@ -37,9 +45,7 @@ const Item = ({ todo }: IItemProps) => {
             <div className='d-flex w-full' style={{ justifyContent: 'space-between', alignItems: 'center' }}>
                 <h2 className={todo.status === "completed" ? "text-decoration-line-through" : ''}>{todo.title}</h2>
                 <div>
-                    <select className='form-select' onChange={(e) => {
-                        dispatch({ type: "CHANGE_STATUS", payload: { id: todo.id, status: e.target.value } })
-                    }}>
+                    <select disabled={changingStatus} className='form-select' onChange={handleChangeStatus}>
                         <option value="in proccess">In proccess</option>
                         <option value="completed">Completed</option>
                         <option value="pending">Pending</option>

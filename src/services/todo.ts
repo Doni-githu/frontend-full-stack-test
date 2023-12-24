@@ -1,17 +1,17 @@
 import axios from "./axios"
-import { TodoDto } from "../interfaces/types"
+import { TodoDto2 } from "../interfaces/types"
 
 const Todo = {
     getAll() {
         return axios.get('/todo/all')
     },
-    addTodo(todo: TodoDto) {
+    addTodo(todo: TodoDto2) {
         return axios.post('/todo/create', todo)
     },
     deleteTodo(id: number) {
         return axios.delete(`/todo/${id}`)
     },
-    updateTodo(id: number, todo: TodoDto) {
+    updateTodo(id: number, todo: TodoDto2) {
         return axios.put(`/todo/${id}`, todo)
     }
 }
