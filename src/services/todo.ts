@@ -11,7 +11,7 @@ const Todo = {
     deleteTodo(id: number) {
         return axios.delete(`/todo/${id}`)
     },
-    updateTodo(id: number, todo: TodoDto2) {
+    updateTodo(id: number, todo: any) {
         return axios.put(`/todo/${id}`, todo)
     }
 }
