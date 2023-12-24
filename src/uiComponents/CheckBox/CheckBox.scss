@@ -1,0 +1,42 @@
+label {
+    position: relative;
+    width: 20px;
+    height: 20px;
+
+    .hid {
+        display: none;
+    }
+
+    .hid:checked+.fake::before {
+        opacity: 1;
+    }
+
+    .hid.t+.fake::before {
+        opacity: 1;
+    }
+
+    .fake {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        position: relative;
+        border: 1px solid #E8E7E7;
+
+        &::before {
+            content: '';
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            opacity: 0;
+            transition: all 0.15s;
+            background-image: url('/images/checkbox.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+}
